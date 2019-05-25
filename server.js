@@ -36,7 +36,7 @@ mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true 
 app.get("/clear", function (req, res) {
   console.log("delete function running");
     // Grab every document in the Articles collection
-    db.Article.remove({})
+    db.Article.deleteMany({})
     .then(function (dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
       res.json(dbArticle);
@@ -46,23 +46,7 @@ app.get("/clear", function (req, res) {
       res.json(err);
     });
     res.send("Articles deleted");
-   /*db.Article.deleteMany({}, function (err) {
-    if (err) return handleError(err);
-    // deleted at most one tank document
-  });*/
-  //db.Article.remove();
-  //db.Note.remove();
-  /*db.Article.remove()
-    .then(function (dbArticle) {
-      // If we were able to successfully find Articles, send them back to the client
-      res.json(dbArticle);
-    })
-    .catch(function (err) {
-      // If an error occurred, send it to the client
-      res.json(err);
-    });*/
-  //db.Note.remove();
-}
+});
 
 // A GET route for scraping the echoJS website
 app.get("/scrape", function (req, res) {
