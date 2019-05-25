@@ -20,7 +20,7 @@ All the news fit to scrape pseudocode:
 
       viii. The page has "Go to saved articles" link (leads to "Saved Articles" page).
 
-      ix.   "Mongo Scraper New York Times Edition" header.
+      ix.   "Mongo Scraper New York Times Edition" header. DONE.
 
       x.    Scrape new articles button.
 
