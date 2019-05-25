@@ -7,6 +7,7 @@ $.getJSON("/articles", function(data) {
   }
 });
 
+//----------------------------------------------------------------------------------
 
 // Whenever someone clicks a p tag
 $(document).on("click", "p", function() {
@@ -42,6 +43,8 @@ $(document).on("click", "p", function() {
     });
 });
 
+//----------------------------------------------------------------------------------
+
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {
   // Grab the id associated with the article from the submit button
@@ -71,4 +74,30 @@ $(document).on("click", "#savenote", function() {
   $("#bodyinput").val("");
 });
 
-console.log("here");
+//----------------------------------------------------------------------------------
+
+$("#scrape").click(function() {
+    // When scrape link is clicked, articles are scraped and page is reloaded.
+    $.ajax({
+      method: "GET",
+      url: "/scrape"
+    })
+      // With that done, add the note information to the page
+      .then(function(data) {
+        location.reload();
+      }); 
+});
+
+//----------------------------------------------------------------------------------
+
+$("#clear").click(function() {
+  // When clear link is clicked, articles are cleared and page is reloaded.
+  $.ajax({
+    method: "GET",
+    url: "/clear"
+  })
+    // With that done, add the note information to the page
+    .then(function(data) {
+      location.reload();
+    }); 
+});

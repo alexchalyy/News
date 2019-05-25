@@ -82,6 +82,11 @@ app.get("/scrape", function (req, res) {
 
     // Send a message to the client
     res.send("Scrape Complete");
+    //window.open("localhost:3000");
+    //window.history.back();
+    //location.reload();
+    //res.render("index");
+    //location.reload();
   });
 });
 
