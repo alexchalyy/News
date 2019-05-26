@@ -1,7 +1,6 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
@@ -30,13 +29,12 @@ app.use(express.static("public"));
 mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
 
 // Routes
-
 // delete route - delete everything from db
 
 app.get("/clear", function (req, res) {
   console.log("delete function running");
-    // Grab every document in the Articles collection
-    db.Article.deleteMany({})
+  // Grab every document in the Articles collection
+  db.Article.deleteMany({})
     .then(function (dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
       res.json(dbArticle);
@@ -45,36 +43,37 @@ app.get("/clear", function (req, res) {
       // If an error occurred, send it to the client
       res.json(err);
     });
-    res.send("Articles deleted");
+  res.send("Articles deleted");
 });
 
 // A GET route for scraping the echoJS website
-app.get("/scrape", function(req, res) {
+app.get("/scrape", function (req, res) {
   // First, we grab the body of the html with axios
-    axios.get("https://www.nytimes.com/section/world/").then(function (response) {
+  axios.get("https://www.nytimes.com/section/world/").then(function (response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
-      var $ = cheerio.load(response.data);
-      var result = {};
+    var $ = cheerio.load(response.data);
+    var result = {};
 
     // Now, we grab every h2 within an article tag, and do the following:
-      $(".css-4jyr1y").each(function (i, element) {
-    // Save an empty result object
-      result.title = $(this)
-      .children("a")
-      .children("h2")
-      .text();
+    $(".css-4jyr1y").each(function (i, element) {
+      // Save an empty result object
+      result.title = $(this).children("a").children("h2").text();
       console.log("\nTitle: " + result.title);
-      result.summary = $(this)
-      .children("a")
-      .children("p")
-      .text();
+      result.summary = $(this).children("a").children("p").text();
       console.log("\nSummary: " + result.summary);
-      var url = $(this)
-      .children("a")
-      .attr("href");
-      console.log("\nURL: " + url);
+      result.link = "https://www.nytimes.com" + $(this).children("a").attr("href");
+      console.log("\n" + result.link);
+      // Create a new Article using the `result` object built from scraping
+      db.Article.create(result)
+        .then(function (dbArticle) {
+          // View the added result in the console
+          console.log(dbArticle);
+        })
+        .catch(function (err) {
+          // If an error occurred, log it
+          console.log(err);
+        });
     });
-
     // Send a message to the client
     res.send("Scrape Complete");
   });
@@ -134,3 +133,5 @@ app.post("/articles/:id", function (req, res) {
 app.listen(PORT, function () {
   console.log("App running on port " + PORT + "!");
 });
+
+console.log("server running ok here");

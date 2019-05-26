@@ -1,9 +1,18 @@
 // Grab the articles as a json
+
+console.log("client running ok here");
+
 $.getJSON("/articles", function(data) {
   // For each one
-  for (var i = 0; i < data.length; i++) {
+  console.log("inside dynamic div function.");
+  for (var i = 0; i < data.length; i++) { 
     // Display the apropos information on the page
-    $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+
+    $("#articles").append("<div class=\"card\"><div class=\"card-header\">" + data[i].title + "</div><div class=\"card-body\">" + 
+                          
+                          "<p class=\"card-text\">" + data[i].summary + "</p><a href=\"" + data[i].link + "\" class=\"btn btn-primary\">" + 
+                          
+                          "Article Link</a></div></div>");
   }
 });
 
