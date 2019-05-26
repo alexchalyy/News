@@ -49,55 +49,30 @@ app.get("/clear", function (req, res) {
 });
 
 // A GET route for scraping the echoJS website
-app.get("/scrape", function (req, res) {
+app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
-  //axios.get("http://www.echojs.com/").then(function (response) {
-    console.log("works here");
     axios.get("https://www.nytimes.com/section/world/").then(function (response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
-    var $ = cheerio.load(response.data);
+      var $ = cheerio.load(response.data);
+      var result = {};
 
     // Now, we grab every h2 within an article tag, and do the following:
-    //$("article h2").each(function (i, element) {
-      $(".css-ye6x8s").each(function (i, element) {
-      // Save an empty result object
-      var result = {};
-      //var title = $(element).find("h2.headline").text().trim();
-
-      /*result.title = $(this)
-        .children("div")
-        .children("div")
-        .children("a")
-        .children("div")
-        .children("h2")
-        .text();*/
-      result.title = $(".css-1dq8tca e1xfvim30").text();
-      result.title = $("a").attr("href");
-      //result.title = title;
-      // Add the text and href of every link, and save them as properties of the result object
-      /*result.title = $(this)
-        //.children("a")
-        .children("css-79e1bk")
-        .text();*/
-      /*result.link = $(this)
-        .children("a")
-        .attr("href");*/
-        /*result.link = $(this)
-        .children("div")
-        .children("div")
-        .children("a")
-        .attr("href");*/
-
-      // Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
-        .then(function (dbArticle) {
-          // View the added result in the console
-          console.log(dbArticle);
-        })
-        .catch(function (err) {
-          // If an error occurred, log it
-          console.log(err);
-        });
+      $(".css-4jyr1y").each(function (i, element) {
+    // Save an empty result object
+      result.title = $(this)
+      .children("a")
+      .children("h2")
+      .text();
+      console.log("\nTitle: " + result.title);
+      result.summary = $(this)
+      .children("a")
+      .children("p")
+      .text();
+      console.log("\nSummary: " + result.summary);
+      var url = $(this)
+      .children("a")
+      .attr("href");
+      console.log("\nURL: " + url);
     });
 
     // Send a message to the client
