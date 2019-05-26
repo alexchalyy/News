@@ -12,7 +12,7 @@ $.getJSON("/articles", function(data) {
                           
                           "<p class=\"card-text\">" + data[i].summary + "</p><a href=\"" + data[i].link + "\" class=\"btn btn-primary\">" + 
                           
-                          "Article Link</a></div></div>");
+                          "Article Link</a><a href=\"#\" class=\"btn btn-primary\">Save Article</a></div></div>");
   }
 });
 
