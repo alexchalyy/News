@@ -40,15 +40,13 @@ All the news fit to scrape pseudocode:
 
       If "Delete from saved" button is clicked, the article is removed from Article table. DONE.
 
-      If "Article Notes" button is clicked,
+      If "Article Notes" button is clicked, DONE.
 
-	    modal pop-up window is opened with header "Notes for article: headline"
+ 	    modal pop-up window is opened with header "Notes for article: headline" DONE.
 
-	       "No notes for this article yet." default message is displayed
+	       New note text box is displayed. DONE.
 
-	       New note text box is displayed.
-
-               "Save Note" button is displayed
+               "Save Note" button is displayed. DONE.
 
                If the user enters anything in text box and clicks "Save Note" button.
 
@@ -59,5 +57,11 @@ All the news fit to scrape pseudocode:
     b. Has headline "Saved articles - your saved articles". DONE.
 
 3. Deploy the website to heroku.
+
+modal-body
+
+comment
+
+savenote
 
 			
