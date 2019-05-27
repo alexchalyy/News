@@ -80,14 +80,15 @@ $(document).on("click", "p", function () {
 
 //----------------------------------------------------------------------------------
 
-function AddNote(note) {
+function AddNote(data) {
 
   //  This function adds note to pop-up modal.
 
   notecount++;
   $("#notes").append("<div id = \"" + notecount +
-    "n\" class=\"card\"><div class=\"card-body\"><button type=\"button\" id = \"" + notecount +
-    "\" class=\"close\" aria-label=\"Close\">" + "<span aria-hidden=\"true\">&times;</span></button><p>" + note + "</p></div></div>");
+    "n\" class=\"card\"><div class=\"card-body\"><button type=\"button\" id = \"" + notecount + "\" note_id = \"" + data.note._id +
+    "\" class=\"close\" aria-label=\"Close\">" + "<span aria-hidden=\"true\">&times;</span></button><p>" + data.note.body + 
+    "</p></div></div>");
   $("#comment").empty();
 
 }
@@ -261,14 +262,17 @@ $(document).on("click", "#note", function () {
       $("#notes").empty();
       console.log("Here is data");
       console.log(data);
+      console.log("note id is " + data.note._id);
       if (data.note) {
-        AddNote(data.note.body);
+        AddNote(data);
       }
     });
     $("#myModal").modal();
 });
 
 //-------------------------------------------------------------------------------------
+
+//  This function removes note from db and modal when close button is clicked.
 
 $(document).on("click", ".close", function () {
   console.log("close button is clicked.");
@@ -277,4 +281,13 @@ $(document).on("click", ".close", function () {
   var nid = "#" + noteid + "n";
   console.log("nid is " + nid);
   $(nid).empty();
+  var newnoteid = $(this).attr("note_id");
+  console.log("new note id = " + newnoteid);
+  $.ajax({
+    method: "DELETE",
+    url: "/deleteNote/" + newnoteid
+  })
+    .then(function (data) {
+      location.reload();
+    });
 });

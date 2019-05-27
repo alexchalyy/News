@@ -64,4 +64,17 @@ comment
 
 savenote
 
+MVP Criteria
+
+Boiler Plate code:	Done.
+
+saved page:		Done.
+
+scraping:		
+
+heroku:
+
+notes:
+
+front-end:
 			

@@ -176,6 +176,21 @@ app.delete("/delete/:id", function (req, res) {
 
 //---------------------------------------------------------------------------------------------------
 
+//  This API function deletes a note from database.
+
+app.delete("/deleteNote/:id", function(req, res)  {
+  db.Note.deleteOne({ _id: req.params.id })
+  .then(function (dbNote) {
+    res.json(dbNote);
+  })
+  .catch(function (err) {
+    // If an error occurred, send it to the client
+    res.json(err);
+  });
+});
+
+//---------------------------------------------------------------------------------------------------
+
 // Start the server
 app.listen(PORT, function () {
   console.log("App running on port " + PORT + "!");
