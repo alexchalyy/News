@@ -161,6 +161,21 @@ app.put("/save/:id", function (req, res) {
 
 //---------------------------------------------------------------------------------------------------
 
+//  This API function deletes an article from database.
+
+app.delete("/delete/:id", function (req, res) {
+  db.Article.deleteOne({ _id: req.params.id })
+  .then(function (dbArticle) {
+    res.json(dbArticle);
+  })
+  .catch(function (err) {
+    // If an error occurred, send it to the client
+    res.json(err);
+  });
+});
+
+//---------------------------------------------------------------------------------------------------
+
 // Start the server
 app.listen(PORT, function () {
   console.log("App running on port " + PORT + "!");

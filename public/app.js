@@ -11,26 +11,25 @@ $.getJSON("/articles", function (data) {
     if (!data[i].saved) {
 
       $("#articles").append("<div data-id = '" + data[i]._id + "'div class=\"card\"><div class=\"card-header\">" + data[i].title +
-
-        "</div><div class=\"card-body\">" + "<p class=\"card-text\">" + data[i].summary + "</p><a href=\"" +
-
-        data[i].link + "\" class=\"btn btn-primary\">" +
-
-        "Article Link</a><a href=\"#\" class=\"btn btn-primary\" id = \"save\" data-id = '" + data[i]._id +
-
-        "'>Save Article</a></div></div>");
-
+        
+                            "</div><div class=\"card-body\">" + "<p class=\"card-text\">" + data[i].summary + "</p><a href=\"" +
+        
+                            data[i].link + "\" class=\"btn btn-primary\">" +
+        
+                            "Article Link</a><a href=\"#\" class=\"btn btn-primary\" id = \"save\" data-id = '" + data[i]._id +
+        
+                            "'>Save Article</a></div></div>");
     } else {
 
       $("#savedarticles").append("<div data-id = '" + data[i]._id + "'class=\"card\"><div class=\"card-header\">" + data[i].title +
 
-        "</div><div class=\"card-body\">" + "<p class=\"card-text\">" + data[i].summary + "</p><a href=\"" +
+                                 "</div><div class=\"card-body\">" + "<p class=\"card-text\">" + data[i].summary + "</p><a href=\"" +
 
-        data[i].link + "\" id = \"delete\" class=\"btn btn-primary\">" +
+                                 data[i].link + "\" id = \"delete\" class=\"btn btn-primary\" data-id = '" + data[i]._id + "'>" +
 
-        "Delete</a><a href=\"#\" class=\"btn btn-primary\" id = \"note\" data-id = '" + data[i]._id +
+                                 "Delete</a><a href=\"#\" class=\"btn btn-primary\" id = \"note\" data-id = '" + data[i]._id +
 
-        "'>Notes</a></div></div>");
+                                 "'>Notes</a></div></div>");
     }
   }
 });
@@ -148,4 +147,20 @@ $(document).on("click", "#save", function () {
       console.log("works!");
       location.reload();
     });
+});
+
+//------------------------------------------------------------------------------------
+
+$(document).on("click", "#delete", function () {
+
+//  When delete button is clicked, this function deletes the article.
+
+  var thisId = $(this).attr("data-id");
+  $.ajax({
+    method: "DELETE",
+    url: "/delete/" + thisId
+  })
+  .then(function(data) {
+    location.reload();
+  });
 });

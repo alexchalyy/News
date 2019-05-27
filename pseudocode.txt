@@ -4,13 +4,13 @@ All the news fit to scrape pseudocode:
 
    a. Header.
 
-      i.    Mongo Scraper link (leads to home page).
+      i.    Mongo Scraper link (leads to home page). DONE.
 
-      ii.   Home link (leads to home page).
+      ii.   Home link (leads to home page). DONE.
 
-      iii.  Saved articles link (leads to "Saved Articles" page).
+      iii.  Saved articles link (leads to "Saved Articles" page). DONE.
 
-      iv.   Clear articles button - clears all articles from mongo database (articledb - article (table))
+      iv.   Clear articles button - clears all articles from mongo database (articledb - article (table)). DONE.
 
       v.    The page has "Uh Oh. Looks like we don't have any new articles" message.
 
@@ -36,15 +36,15 @@ All the news fit to scrape pseudocode:
 
 			      URL - the url to the original article
 
-		      Afterwards, the articles are displayed on home page including headline, summary, and url and "Save aarticle" button next to each article.
+		      Afterwards, the articles are displayed on home page including headline, summary, and url and "Save aarticle" button next to each article. DONE
 
-		      If "Save article" button is clicked, the article is moved from home page to saved articles page.
+		      If "Save article" button is clicked, the article is moved from home page to saved articles page. DONE
 
    b. Has a footer.
 
 2. Create "Saved Articles" page.
 
-   a. Contains saved articles moved from home page, with "Delete from saved" and "Article Notes" button.
+   a. Contains saved articles moved from home page, with "Delete from saved" and "Article Notes" button. DONE.
 
       If "Delete from saved" button is clicked, the article is removed from Article table.
 
@@ -64,7 +64,7 @@ All the news fit to scrape pseudocode:
 
 			If x button is clicked, notes are removed from articles table.
 
-    b. Has headline "Saved articles - your saved articles".
+    b. Has headline "Saved articles - your saved articles". DONE.
 
     c. Has a footer.
 
