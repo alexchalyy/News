@@ -2,24 +2,43 @@
 
 console.log("client running ok here");
 
-$.getJSON("/articles", function(data) {
+$.getJSON("/articles", function (data) {
   // For each one
   console.log("inside dynamic div function.");
-  for (var i = 0; i < data.length; i++) { 
+  for (var i = 0; i < data.length; i++) {
     // Display the apropos information on the page
+    console.log(data[i]);
+    if (!data[i].saved) {
 
-    $("#articles").append("<div class=\"card\"><div class=\"card-header\">" + data[i].title + "</div><div class=\"card-body\">" + 
-                          
-                          "<p class=\"card-text\">" + data[i].summary + "</p><a href=\"" + data[i].link + "\" class=\"btn btn-primary\">" + 
-                          
-                          "Article Link</a><a href=\"#\" class=\"btn btn-primary\">Save Article</a></div></div>");
+      $("#articles").append("<div data-id = '" + data[i]._id + "'div class=\"card\"><div class=\"card-header\">" + data[i].title +
+
+        "</div><div class=\"card-body\">" + "<p class=\"card-text\">" + data[i].summary + "</p><a href=\"" +
+
+        data[i].link + "\" class=\"btn btn-primary\">" +
+
+        "Article Link</a><a href=\"#\" class=\"btn btn-primary\" id = \"save\" data-id = '" + data[i]._id +
+
+        "'>Save Article</a></div></div>");
+
+    } else {
+
+      $("#savedarticles").append("<div data-id = '" + data[i]._id + "'class=\"card\"><div class=\"card-header\">" + data[i].title +
+
+        "</div><div class=\"card-body\">" + "<p class=\"card-text\">" + data[i].summary + "</p><a href=\"" +
+
+        data[i].link + "\" id = \"delete\" class=\"btn btn-primary\">" +
+
+        "Delete</a><a href=\"#\" class=\"btn btn-primary\" id = \"note\" data-id = '" + data[i]._id +
+
+        "'>Notes</a></div></div>");
+    }
   }
 });
 
 //----------------------------------------------------------------------------------
 
 // Whenever someone clicks a p tag
-$(document).on("click", "p", function() {
+$(document).on("click", "p", function () {
   // Empty the notes from the note section
   $("#notes").empty();
   // Save the id from the p tag
@@ -31,7 +50,7 @@ $(document).on("click", "p", function() {
     url: "/articles/" + thisId
   })
     // With that done, add the note information to the page
-    .then(function(data) {
+    .then(function (data) {
       console.log(data);
       // The title of the article
       $("#notes").append("<h2>" + data.title + "</h2>");
@@ -55,7 +74,7 @@ $(document).on("click", "p", function() {
 //----------------------------------------------------------------------------------
 
 // When you click the savenote button
-$(document).on("click", "#savenote", function() {
+$(document).on("click", "#savenote", function () {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
 
@@ -71,7 +90,7 @@ $(document).on("click", "#savenote", function() {
     }
   })
     // With that done
-    .then(function(data) {
+    .then(function (data) {
       // Log the response
       console.log(data);
       // Empty the notes section
@@ -85,28 +104,48 @@ $(document).on("click", "#savenote", function() {
 
 //----------------------------------------------------------------------------------
 
-$("#scrape").click(function() {
-    // When scrape link is clicked, articles are scraped and page is reloaded.
-    $.ajax({
-      method: "GET",
-      url: "/scrape"
-    })
-      // With that done, add the note information to the page
-      .then(function(data) {
-        location.reload();
-      }); 
+$("#scrape").click(function () {
+  // When scrape link is clicked, articles are scraped and page is reloaded.
+  $.ajax({
+    method: "GET",
+    url: "/scrape"
+  })
+    // With that done, add the note information to the page
+    .then(function (data) {
+      location.reload();
+    });
 });
 
 //----------------------------------------------------------------------------------
 
-$("#clear").click(function() {
+$("#clear").click(function () {
   // When clear link is clicked, articles are cleared and page is reloaded.
   $.ajax({
     method: "GET",
     url: "/clear"
   })
     // With that done, add the note information to the page
-    .then(function(data) {
+    .then(function (data) {
       location.reload();
-    }); 
+    });
+});
+
+//------------------------------------------------------------------------------------
+
+$(document).on("click", "#save", function () {
+
+  //  This function moves article from home to saved page when "Save" button is clicked.
+
+  var thisId = $(this).attr("data-id");
+
+  console.log("this id is " + thisId);
+  $.ajax({
+    method: "PUT",
+    url: "/save/" + thisId,
+    data: true
+  })
+    .then(function (data) {
+      console.log("works!");
+      location.reload();
+    });
 });

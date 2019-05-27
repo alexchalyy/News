@@ -31,6 +31,8 @@ mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true 
 // Routes
 // delete route - delete everything from db
 
+//---------------------------------------------------------------------------------------------------
+
 app.get("/clear", function (req, res) {
   console.log("delete function running");
   // Grab every document in the Articles collection
@@ -45,6 +47,8 @@ app.get("/clear", function (req, res) {
     });
   res.send("Articles deleted");
 });
+
+//---------------------------------------------------------------------------------------------------
 
 // A GET route for scraping the echoJS website
 app.get("/scrape", function (req, res) {
@@ -63,6 +67,7 @@ app.get("/scrape", function (req, res) {
       console.log("\nSummary: " + result.summary);
       result.link = "https://www.nytimes.com" + $(this).children("a").attr("href");
       console.log("\n" + result.link);
+      result.saved = false;
       // Create a new Article using the `result` object built from scraping
       db.Article.create(result)
         .then(function (dbArticle) {
@@ -79,6 +84,8 @@ app.get("/scrape", function (req, res) {
   });
 });
 
+//---------------------------------------------------------------------------------------------------
+
 // Route for getting all Articles from the db
 app.get("/articles", function (req, res) {
   // Grab every document in the Articles collection
@@ -92,6 +99,8 @@ app.get("/articles", function (req, res) {
       res.json(err);
     });
 });
+
+//---------------------------------------------------------------------------------------------------
 
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function (req, res) {
@@ -108,6 +117,8 @@ app.get("/articles/:id", function (req, res) {
       res.json(err);
     });
 });
+
+//---------------------------------------------------------------------------------------------------
 
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function (req, res) {
@@ -129,9 +140,32 @@ app.post("/articles/:id", function (req, res) {
     });
 });
 
+//---------------------------------------------------------------------------------------------------
+
+app.put("/save/:id", function (req, res) {
+  //  Route for updating the article to saved.
+  console.log("works here");
+  console.log("requested id = " + req.params.id);
+  db.Article.findByIdAndUpdate({ _id: req.params.id })
+  .set('saved', true)
+  .then(function (dbArticle) {
+    // If we were able to successfully find an Article with the given id, send it back to the client
+    console.log("works after update");
+    res.json(dbArticle);
+  })
+  .catch(function (err) {
+    // If an error occurred, send it to the client
+    res.json(err);
+  });
+});
+
+//---------------------------------------------------------------------------------------------------
+
 // Start the server
 app.listen(PORT, function () {
   console.log("App running on port " + PORT + "!");
 });
+
+//---------------------------------------------------------------------------------------------------
 
 console.log("server running ok here");
