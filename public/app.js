@@ -102,15 +102,15 @@ function AddNote(note) {
 });*/
 
 $("#sn").click(function () {
+  $("#notes").empty();
   console.log("save note is called.");
   console.log("saved note id: " + savenoteid);
   var note = $("#comment").val();
   console.log("saved note: " + note);
 
   if (note != "") {
-    AddNote(note);
+    //AddNote(note);
     //notecount++;
-
     /*
     $("#notes").append("<div id = \"" + notecount +
       "n\" class=\"card\"><div class=\"card-body\"><button type=\"button\" id = \"" + notecount +
@@ -133,6 +133,7 @@ $("#sn").click(function () {
         console.log(data);
         // Empty the notes section
         //$("#notes").empty();
+        location.reload();
       });
     /*$("#notes").append("<p>" + note + "</p><button type=\"button\" class=\"close\" aria-label=\"Close\">" + 
                        "<span aria-hidden=\"true\">&times;</span></button>");*/
@@ -257,6 +258,7 @@ $(document).on("click", "#note", function () {
   })
     // With that done, add the note information to the page
     .then(function (data) {
+      $("#notes").empty();
       console.log("Here is data");
       console.log(data);
       if (data.note) {
