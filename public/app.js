@@ -80,6 +80,20 @@ $(document).on("click", "p", function () {
 
 //----------------------------------------------------------------------------------
 
+function AddNote(note) {
+
+  //  This function adds note to pop-up modal.
+
+  notecount++;
+  $("#notes").append("<div id = \"" + notecount +
+    "n\" class=\"card\"><div class=\"card-body\"><button type=\"button\" id = \"" + notecount +
+    "\" class=\"close\" aria-label=\"Close\">" + "<span aria-hidden=\"true\">&times;</span></button><p>" + note + "</p></div></div>");
+  $("#comment").empty();
+
+}
+
+//----------------------------------------------------------------------------------
+
 //  This function adds note to pop-up note window after save note button is clicked.
 
 /*$(document).on("click", "#sn", function () {
@@ -92,17 +106,39 @@ $("#sn").click(function () {
   console.log("saved note id: " + savenoteid);
   var note = $("#comment").val();
   console.log("saved note: " + note);
+
   if (note != "") {
-    notecount++;
-    $("#notes").append("<div id = \"" + notecount + 
-      "n\" class=\"card\"><div class=\"card-body\"><button type=\"button\" id = \"" + notecount + 
+    AddNote(note);
+    //notecount++;
+
+    /*
+    $("#notes").append("<div id = \"" + notecount +
+      "n\" class=\"card\"><div class=\"card-body\"><button type=\"button\" id = \"" + notecount +
       "\" class=\"close\" aria-label=\"Close\">" + "<span aria-hidden=\"true\">&times;</span></button><p>" + note + "</p></div></div>");
-    $("#comment").empty();
+    $("#comment").empty();*/
+
+    // Run a POST request to change the note, using what's entered in the inputs
+    $.ajax({
+      method: "POST",
+      url: "/articles/" + savenoteid,
+      data: {
+        // Value taken from note textarea
+        //body: $("#bodyinput").val()
+        body: note
+      }
+    })
+      // With that done
+      .then(function (data) {
+        // Log the response
+        console.log(data);
+        // Empty the notes section
+        //$("#notes").empty();
+      });
     /*$("#notes").append("<p>" + note + "</p><button type=\"button\" class=\"close\" aria-label=\"Close\">" + 
                        "<span aria-hidden=\"true\">&times;</span></button>");*/
     //location.reload();
     // Now make an ajax call for the Article
-    $.ajax({
+    /*$.ajax({
       method: "GET",
       url: "/articles/" + savenoteid
     })
@@ -110,7 +146,7 @@ $("#sn").click(function () {
       .then(function (data) {
         console.log(data);
         console.log("note return");
-      });
+      });*/
   }
 });
 
@@ -215,7 +251,19 @@ $(document).on("click", "#delete", function () {
 
 $(document).on("click", "#note", function () {
   savenoteid = $(this).attr("data-id");
-  $("#myModal").modal();
+  $.ajax({
+    method: "GET",
+    url: "/articles/" + savenoteid
+  })
+    // With that done, add the note information to the page
+    .then(function (data) {
+      console.log("Here is data");
+      console.log(data);
+      if (data.note) {
+        AddNote(data.note.body);
+      }
+    });
+    $("#myModal").modal();
 });
 
 //-------------------------------------------------------------------------------------
