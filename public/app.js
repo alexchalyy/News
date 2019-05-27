@@ -164,3 +164,12 @@ $(document).on("click", "#delete", function () {
     location.reload();
   });
 });
+
+//-------------------------------------------------------------------------------------
+
+//  This function opens pop-up window with option to make notes for an article when article notes button is clicked.
+
+$(document).on("click", "#note", function () {
+  $("#myModal").modal();
+});
+

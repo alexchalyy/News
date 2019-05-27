@@ -12,17 +12,11 @@ All the news fit to scrape pseudocode:
 
       iv.   Clear articles button - clears all articles from mongo database (articledb - article (table)). DONE.
 
-      v.    The page has "Uh Oh. Looks like we don't have any new articles" message.
+      v.    The page has "Go to saved articles" link (leads to "Saved Articles" page). DONE.
 
-      vi.   The page has "What would you like to do?" message.
+      vi.   "Mongo Scraper New York Times Edition" header. DONE.
 
-      vii.  The page has "Try scraping new articles" link.
-
-      viii. The page has "Go to saved articles" link (leads to "Saved Articles" page).
-
-      ix.   "Mongo Scraper New York Times Edition" header. DONE.
-
-      x.    Scrape new articles button.
+      vii.  Scrape new articles button.
 
 	    - If the button was clicked or "Try scraping new articles" link is clicked.
 
@@ -30,23 +24,21 @@ All the news fit to scrape pseudocode:
 
 		      NY Times web site is visited and latest aticles are scraped and stored in article table including (The amount of articles scraped must complement already existing articles to sum to 20):
 
-			      Headline - title of article (shown as link, if it is clicked article url is opened).
+			      Headline - title of article (shown as link, if it is clicked article url is opened). DONE.
 
-			      Summary - a short summary of the article
+			      Summary - a short summary of the article DONE.
 
-			      URL - the url to the original article
+			      URL - the url to the original article DONE.
 
 		      Afterwards, the articles are displayed on home page including headline, summary, and url and "Save aarticle" button next to each article. DONE
 
 		      If "Save article" button is clicked, the article is moved from home page to saved articles page. DONE
 
-   b. Has a footer.
-
 2. Create "Saved Articles" page.
 
    a. Contains saved articles moved from home page, with "Delete from saved" and "Article Notes" button. DONE.
 
-      If "Delete from saved" button is clicked, the article is removed from Article table.
+      If "Delete from saved" button is clicked, the article is removed from Article table. DONE.
 
       If "Article Notes" button is clicked,
 
@@ -65,8 +57,6 @@ All the news fit to scrape pseudocode:
 			If x button is clicked, notes are removed from articles table.
 
     b. Has headline "Saved articles - your saved articles". DONE.
-
-    c. Has a footer.
 
 3. Deploy the website to heroku.
 
