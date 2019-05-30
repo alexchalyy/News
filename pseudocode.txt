@@ -56,7 +56,10 @@ All the news fit to scrape pseudocode:
 
     b. Has headline "Saved articles - your saved articles". DONE.
 
-3. Deploy the website to heroku.
+3. Use handlebars to display some things.
+
+4. Deploy the website to heroku.
+
 
 modal-body
 

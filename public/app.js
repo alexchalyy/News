@@ -105,9 +105,11 @@ function AddNote(data) {
 $("#sn").click(function () {
   $("#notes").empty();
   console.log("save note is called.");
-  console.log("saved note id: " + savenoteid);
-  var note = $("#comment").val();
-  console.log("saved note: " + note);
+  //console.log("saved note id: " + savenoteid);
+  var n = $("#comment").val();
+  console.log("saved note: " + n);
+
+  var note = String(n);
 
   if (note != "") {
     //AddNote(note);
@@ -120,7 +122,7 @@ $("#sn").click(function () {
 
     // Run a POST request to change the note, using what's entered in the inputs
     $.ajax({
-      method: "POST",
+      method: "PUT",
       url: "/articles/" + savenoteid,
       data: {
         // Value taken from note textarea
@@ -253,6 +255,7 @@ $(document).on("click", "#delete", function () {
 
 $(document).on("click", "#note", function () {
   savenoteid = $(this).attr("data-id");
+  console.log("save note id is when notes button is clicked: " + savenoteid);
   $.ajax({
     method: "GET",
     url: "/articles/" + savenoteid

@@ -1,6 +1,7 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var handle = require("express-handlebars");
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
@@ -121,8 +122,24 @@ app.get("/articles/:id", function (req, res) {
 //---------------------------------------------------------------------------------------------------
 
 // Route for saving/updating an Article's associated Note
-app.post("/articles/:id", function (req, res) {
+app.put("/articles/:id", function (req, res) {
   // Create a new note and pass the req.body to the entry
+  console.log("save note is called on server side.");
+  console.log("id is " + req.params.id);
+  console.log("note is " + req.body.note);
+  db.Article.findByIdAndUpdate(
+    {_id: req.params.id}, 
+    {$push: {notes: req.body.note}}
+    )   
+    .then(function (dbArticle) {
+      // If we were able to successfully find an Article with the given id, send it back to the client
+      res.json(dbArticle);
+    })
+    .catch(function (err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+  /*
   db.Note.create(req.body)
     .then(function (dbNote) {
       // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
@@ -137,7 +154,7 @@ app.post("/articles/:id", function (req, res) {
     .catch(function (err) {
       // If an error occurred, send it to the client
       res.json(err);
-    });
+    }); */
 });
 
 //---------------------------------------------------------------------------------------------------
@@ -186,6 +203,29 @@ app.delete("/deleteNote/:id", function(req, res)  {
   .catch(function (err) {
     // If an error occurred, send it to the client
     res.json(err);
+  });
+});
+
+//---------------------------------------------------------------------------------------------------
+
+//  Grabs all the notes associated with an article.
+
+app.get("/notes/:headline_id?", function(req, res) {
+  var query = {};
+  if (req.params.headline_id) {
+    query._id = req.params.headline_id;
+  }
+
+  db.Note.get(query, function(err, data)  {
+    res.json(data);
+  });
+});
+
+//---------------------------------------------------------------------------------------------------
+
+app.post("/notes", function(req, res) {
+  db.Note.save(req.body, function(data) {
+    res.json(data);
   });
 });
 
