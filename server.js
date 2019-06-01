@@ -42,7 +42,7 @@ mongoose.connect(MONGODB_URI);
 // Routes
 // delete route - delete everything from db
 
-
+app.listen(port);
 
 //---------------------------------------------------------------------------------------------------
 
