@@ -33,7 +33,7 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/heroku_71qld7r3";
 
 mongoose.connect(MONGODB_URI);
 
@@ -41,6 +41,8 @@ mongoose.connect(MONGODB_URI);
 
 // Routes
 // delete route - delete everything from db
+
+
 
 //---------------------------------------------------------------------------------------------------
 
