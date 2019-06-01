@@ -32,5 +32,5 @@ Handlebars and html file were used to created web pages. They were styled using 
 
 # Back End
 
-Mongodb and mongoose were used for database. Node was used to run the website on Heroku. API routes were created using axios. Cheerio npm package was used to scrape NY Times web site.
+Mongodb and mongoose were used for database. Node and express were used to run the website on Heroku. API routes were created using axios. Cheerio npm package was used to scrape NY Times web site.
 
