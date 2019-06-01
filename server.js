@@ -1,3 +1,7 @@
+/*  This website scrapes NY Times web site to display 20 articles. There are options to clear all articles, save them, and leave notes. This files launches the server.
+
+    Written by Alex Chalyy on 5/25/2019. */
+
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
@@ -10,8 +14,6 @@ var cheerio = require("cheerio");
 
 // Require all models
 var db = require("./models");
-
-//var PORT = 3000;
 
 var PORT = process.env.PORT || 3000;
 
@@ -41,22 +43,27 @@ mongoose.connect(MONGODB_URI);
 
 // Routes
 // delete route - delete everything from db
-
-app.listen(port);
+/*
+app.listen(PORT);
 
 //---------------------------------------------------------------------------------------------------
 
 app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "home"));
-});
+});  */
 
 //---------------------------------------------------------------------------------------------------
+//
+//  This is home page route.
 
 app.get("/", function (req, res) {
   // res.send("<h1>Hello World!!!</h1>")
   res.render("home");
 })
 
+//---------------------------------------------------------------------------------------------------
+//
+//  API Routes are below.
 
 app.get("/clear", function (req, res) {
   console.log("delete function running");
@@ -132,8 +139,6 @@ app.get("/articles", function (req, res) {
 app.get("/articles/:id", function (req, res) {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
   db.Article.findOne({ _id: req.params.id })
-    // ..and populate all of the notes associated with it
-    .populate("note")
     .then(function (dbArticle) {
       // If we were able to successfully find an Article with the given id, send it back to the client
       res.json(dbArticle);
@@ -164,22 +169,7 @@ app.put("/articles/:id", function (req, res) {
       // If an error occurred, send it to the client
       res.json(err);
     });
-  /*
-  db.Note.create(req.body)
-    .then(function (dbNote) {
-      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-      return db.Article.findByIdAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
-    })
-    .then(function (dbArticle) {
-      // If we were able to successfully update an Article, send it back to the client
-      res.json(dbArticle);
-    })
-    .catch(function (err) {
-      // If an error occurred, send it to the client
-      res.json(err);
-    }); */
+
 });
 
 //---------------------------------------------------------------------------------------------------
@@ -221,7 +211,6 @@ app.delete("/delete/:id", function (req, res) {
 //  This API function deletes a note from database.
 
 app.delete("/deleteNote/:id", function(req, res)  {
-  //db.Article.findByIdAndUpdate({ _id: req.params.id}, {$pullAll: {notes: []}})
   console.log("note to be deleted is " + req.body.note);
   db.Article.findByIdAndUpdate({ _id: req.params.id}, {$pullAll: {notes: [req.body.note]}})
   .then(function(dbArticle)  {
@@ -230,45 +219,7 @@ app.delete("/deleteNote/:id", function(req, res)  {
   .catch(function (err) {
     res.json(err);
   });
-  /*
-  db.Note.deleteOne({ _id: req.params.id })
-  .then(function (dbNote) {
-    res.json(dbNote);
-  })
-  .catch(function (err) {
-    // If an error occurred, send it to the client
-    res.json(err);
-  });*/
-});
 
-//---------------------------------------------------------------------------------------------------
-
-//  Grabs all the notes associated with an article.
-
-app.get("/notes/:headline_id?", function(req, res) {
-  var query = {};
-  if (req.params.headline_id) {
-    query._id = req.params.headline_id;
-  }
-
-  db.Note.get(query, function(err, data)  {
-    res.json(data);
-  });
-});
-
-//---------------------------------------------------------------------------------------------------
-
-app.post("/notes", function(req, res) {
-  db.Note.save(req.body, function(data) {
-    res.json(data);
-  });
-});
-
-//---------------------------------------------------------------------------------------------------
-
-// Start the server
-app.listen(PORT, function () {
-  console.log("App running on port " + PORT + "!");
 });
 
 //---------------------------------------------------------------------------------------------------
@@ -305,6 +256,13 @@ app.post("/notes/save/:id", function(req, res) {
 
 app.engine("handlebars", exphbs({ defaultLayouts: "main"}));
 app.set("view engine", "handlebars")
+
+//---------------------------------------------------------------------------------------------------
+
+// Start the server
+app.listen(PORT, function () {
+  console.log("App running on port " + PORT + "!");
+});
 
 //---------------------------------------------------------------------------------------------------
 

@@ -1,3 +1,5 @@
+//  This is article table that holds article information including associated notes.
+
 var mongoose = require("mongoose");
 
 // Save a reference to the Schema constructor
