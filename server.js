@@ -1,7 +1,7 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-var handle = require("express-handlebars");
+var exphbs = require("express-handlebars");
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
@@ -15,6 +15,8 @@ var PORT = 3000;
 
 // Initialize Express
 var app = express();
+
+var titles = [];
 
 // Configure middleware
 
@@ -33,6 +35,12 @@ mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true 
 // delete route - delete everything from db
 
 //---------------------------------------------------------------------------------------------------
+
+app.get("/", function (req, res) {
+  // res.send("<h1>Hello World!!!</h1>")
+  res.render("home");
+})
+
 
 app.get("/clear", function (req, res) {
   console.log("delete function running");
@@ -64,6 +72,7 @@ app.get("/scrape", function (req, res) {
       // Save an empty result object
       result.title = $(this).children("a").children("h2").text();
       console.log("\nTitle: " + result.title);
+      titles.push(result.title);
       result.summary = $(this).children("a").children("p").text();
       console.log("\nSummary: " + result.summary);
       result.link = "https://www.nytimes.com" + $(this).children("a").attr("href");
@@ -275,6 +284,11 @@ app.post("/notes/save/:id", function(req, res) {
         }
       });
 });
+
+//---------------------------------------------------------------------------------------------------
+
+app.engine("handlebars", exphbs({ defaultLayouts: "main"}));
+app.set("view engine", "handlebars")
 
 //---------------------------------------------------------------------------------------------------
 
