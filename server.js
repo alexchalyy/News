@@ -196,6 +196,16 @@ app.delete("/delete/:id", function (req, res) {
 //  This API function deletes a note from database.
 
 app.delete("/deleteNote/:id", function(req, res)  {
+  //db.Article.findByIdAndUpdate({ _id: req.params.id}, {$pullAll: {notes: []}})
+  console.log("note to be deleted is " + req.body.note);
+  db.Article.findByIdAndUpdate({ _id: req.params.id}, {$pullAll: {notes: [req.body.note]}})
+  .then(function(dbArticle)  {
+    res.json(dbArticle);
+  })
+  .catch(function (err) {
+    res.json(err);
+  });
+  /*
   db.Note.deleteOne({ _id: req.params.id })
   .then(function (dbNote) {
     res.json(dbNote);
@@ -203,7 +213,7 @@ app.delete("/deleteNote/:id", function(req, res)  {
   .catch(function (err) {
     // If an error occurred, send it to the client
     res.json(err);
-  });
+  });*/
 });
 
 //---------------------------------------------------------------------------------------------------
@@ -234,6 +244,36 @@ app.post("/notes", function(req, res) {
 // Start the server
 app.listen(PORT, function () {
   console.log("App running on port " + PORT + "!");
+});
+
+//---------------------------------------------------------------------------------------------------
+
+// Create a new note
+app.post("/notes/save/:id", function(req, res) {
+  console.log("this is back end save note api route call");
+  // Create a new note and pass the req.body to the entry
+  console.log(req.body.text);
+  console.log(req.params.id);
+  var note = ({
+    body: req.body.text,
+    article: req.params.id
+  });
+  console.log("This is note: " + note);
+  // And save the new note the db
+
+      db.Article.findOneAndUpdate({ "_id": req.params.id }, {$push: { "notes": note.body } })
+      // Execute the above query
+      .exec(function(err) {
+        // Log any errors
+        if (err) {
+          console.log(err);
+          res.send(err);
+        }
+        else {
+          // Or send the note to the browser
+          res.send(note);
+        }
+      });
 });
 
 //---------------------------------------------------------------------------------------------------

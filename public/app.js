@@ -84,12 +84,24 @@ function AddNote(data) {
 
   //  This function adds note to pop-up modal.
 
+  console.log("add note is opened.");
+  console.log("notes length is " + data.notes.length);
+  console.log("notes are " + data.notes);
+  console.log("first note is " + data.notes[0]);
+  for (var c = 0; c < data.notes.length; c++) {
+    $("#notes").append("<div id = \"" + c +
+    "n\" class=\"card\"><div class=\"card-body\"><button type=\"button\" id = \"" + c + "\" data-id = \"" + savenoteid +
+    "\" note = \"" + data.notes[c] + 
+    "\" class=\"close btn pull-right\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button><p>" + data.notes[c] + 
+    "</p></div></div>");
+  }
+  /*
   notecount++;
   $("#notes").append("<div id = \"" + notecount +
     "n\" class=\"card\"><div class=\"card-body\"><button type=\"button\" id = \"" + notecount + "\" note_id = \"" + data.note._id +
     "\" class=\"close\" aria-label=\"Close\">" + "<span aria-hidden=\"true\">&times;</span></button><p>" + data.note.body + 
     "</p></div></div>");
-  $("#comment").empty();
+  $("#comment").empty();*/
 
 }
 
@@ -105,11 +117,11 @@ function AddNote(data) {
 $("#sn").click(function () {
   $("#notes").empty();
   console.log("save note is called.");
-  //console.log("saved note id: " + savenoteid);
+  console.log("saved note id: " + savenoteid);
   var n = $("#comment").val();
   console.log("saved note: " + n);
 
-  var note = String(n);
+  var note = n;
 
   if (note != "") {
     //AddNote(note);
@@ -121,7 +133,21 @@ $("#sn").click(function () {
     $("#comment").empty();*/
 
     // Run a POST request to change the note, using what's entered in the inputs
+    console.log("save note that is being sent is below");
+    console.log(note);
     $.ajax({
+      method: "POST",
+      url: "/notes/save/" + savenoteid,
+      data: {
+        text: note
+      }
+    }).done(function(data) {
+        // Log the response
+        console.log(data);
+        // Empty the notes section
+        location.reload();
+    });
+    /*$.ajax({
       method: "PUT",
       url: "/articles/" + savenoteid,
       data: {
@@ -137,7 +163,7 @@ $("#sn").click(function () {
         // Empty the notes section
         //$("#notes").empty();
         location.reload();
-      });
+      });*/
     /*$("#notes").append("<p>" + note + "</p><button type=\"button\" class=\"close\" aria-label=\"Close\">" + 
                        "<span aria-hidden=\"true\">&times;</span></button>");*/
     //location.reload();
@@ -265,8 +291,9 @@ $(document).on("click", "#note", function () {
       $("#notes").empty();
       console.log("Here is data");
       console.log(data);
-      console.log("note id is " + data.note._id);
-      if (data.note) {
+      //console.log("note id is " + data.note._id);
+      if (data.notes) {
+        console.log("data has notes!");
         AddNote(data);
       }
     });
@@ -281,14 +308,22 @@ $(document).on("click", ".close", function () {
   console.log("close button is clicked.");
   var noteid = $(this).attr("id");
   console.log("note id is " + noteid);
+  var articleid = $(this).attr("data-id");
+  console.log("article id is " + articleid);
+  var articlenote = $(this).attr("note");
+  console.log("note is " + articlenote)
+  /*
   var nid = "#" + noteid + "n";
   console.log("nid is " + nid);
   $(nid).empty();
   var newnoteid = $(this).attr("note_id");
-  console.log("new note id = " + newnoteid);
+  console.log("new note id = " + newnoteid);*/
   $.ajax({
     method: "DELETE",
-    url: "/deleteNote/" + newnoteid
+    url: "/deleteNote/" + articleid,
+    data: {
+      note: articlenote
+    }
   })
     .then(function (data) {
       location.reload();
