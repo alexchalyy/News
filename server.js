@@ -52,6 +52,13 @@ app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "home"));
 });  */
 
+// saved page html route.
+
+app.get("/saved", function (req, res) {
+  // res.send("<h1>Hello World!!!</h1>")
+  res.render("saved");
+});
+
 //---------------------------------------------------------------------------------------------------
 //
 //  This is home page route.
@@ -59,7 +66,7 @@ app.get("/", function(req, res) {
 app.get("/", function (req, res) {
   // res.send("<h1>Hello World!!!</h1>")
   res.render("home");
-})
+});
 
 //---------------------------------------------------------------------------------------------------
 //
