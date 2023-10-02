@@ -24,10 +24,6 @@ If a user clicks on notes button on saved article, an initialy empty pop-up moda
 
 If a user clicks on clear articles button, all articles and associated notes are deleted from the web site.
 
-The website link is at:
-
-https://alexnewscraper.herokuapp.com/
-
 # Creation Process
 
 # Front End
